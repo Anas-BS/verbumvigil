@@ -1,0 +1,223 @@
+/* Base styles */
+:root {
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --secondary: #2ecc71;
+  --warning: #e74c3c;
+  --text: #333;
+  --text-light: #666;
+  --bg: #f8f9fa;
+  --card-bg: #fff;
+  --border: #ddd;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
+  padding-bottom: 50px;
+}
+
+/* Header */
+header {
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Main content */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.input-section {
+  margin-bottom: 2.5rem;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Button styles */
+.submit-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 600;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Results section */
+.results-section {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.results-section h2 {
+  margin-bottom: 1rem;
+  color: var(--text);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.alert {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.warning {
+  background-color: rgba(231, 76, 60, 0.1);
+  border-left: 4px solid var(--warning);
+  color: #c0392b;
+}
+
+.success {
+  background-color: rgba(46, 204, 113, 0.1);
+  border-left: 4px solid var(--secondary);
+  color: #27ae60;
+}
+
+/* Mismatch cards */
+.mismatches-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.mismatch-card {
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mismatch-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.mismatch-phrase {
+  font-weight: 700;
+  color: var(--warning);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.mismatch-explanation {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.mismatch-explanation p {
+  margin-bottom: 0.5rem;
+}
+
+.mismatch-explanation strong {
+  color: var(--text);
+}
+
+/* Gemini result styling */
+.gemini-result {
+  border-left: 4px solid #9C27B0;
+}
+
+.source-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #9C27B0;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-bottom-left-radius: 6px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mismatches-container {
+    grid-template-columns: 1fr;
+  }
+  
+  header {
+    padding: 1.5rem 0;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .results-section {
+    padding: 1.5rem;
+  }
+}

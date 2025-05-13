@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerbumVigil - Cultural Mismatch Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>VerbumVigil</h1>
+        <p class="subtitle">Cultural Mismatch Detector for Translators</p>
+    </header>
+    
+    <main>
+        <section class="input-section">
+            <form method="POST" action="/">
+                <div class="form-group">
+                    <label for="text">Enter text to analyze:</label>
+                    <textarea id="text" name="text" rows="10" required>{{ text|default('', true) }}</textarea>
+                </div>
+                <button type="submit" class="submit-btn">Analyze Text</button>
+            </form>
+        </section>
+        
+        {% if has_results %}
+        <section class="results-section">
+            <h2>Analysis Results</h2>
+            
+            {% if mismatches %}
+                <p class="alert warning">Found {{ mismatches|length }} potential cultural mismatches:</p>
+                
+                <div class="mismatches-container">
+                {% for mismatch in mismatches %}
+                    <div class="mismatch-card {% if mismatch.source == 'gemini' %}gemini-result{% endif %}">
+                        <div class="mismatch-phrase">
+                            "{{ mismatch.phrase }}"
+                        </div>
+                        <div class="mismatch-explanation">
+                            <p><strong>Issue:</strong> {{ mismatch.explanation }}</p>
+                            <p><strong>Suggestion:</strong> {{ mismatch.suggestion }}</p>
+                        </div>
+                        {% if mismatch.source == 'gemini' %}
+                        <div class="source-tag">Detected by Gemini AI</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p class="alert success">No cultural mismatches detected.</p>
+            {% endif %}
+        </section>
+        {% endif %}
+    </main>
+    
+    <footer>
+        <p>VerbumVigil - Powered by Flask and Gemini 2.5</p>
+    </footer>
+</body>
+</html>
