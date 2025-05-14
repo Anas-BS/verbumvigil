@@ -3,32 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VerbumVigil - Cultural Mismatch Detector</title>
+    <title>VerbumVigil - Cultural Expression Detector</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const themeIcon = document.querySelector('.fa-moon');
+            if (themeIcon) {
+                themeIcon.classList.toggle('fa-moon');
+                themeIcon.classList.toggle('fa-sun');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make the "Start Analysis" button scroll to the input section
+            document.querySelector('.neon-button').addEventListener('click', function() {
+                document.querySelector('.input-section').scrollIntoView({behavior: 'smooth'});
+            });
+            
+            // Add "copied" notification to suggestions when clicked
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.mismatch-suggestion')) {
+                    const suggestion = e.target.closest('.mismatch-suggestion');
+                    const text = suggestion.textContent.replace('Suggestion:', '').trim();
+                    navigator.clipboard.writeText(text);
+                    
+                    const notification = document.createElement('div');
+                    notification.className = 'copy-notification';
+                    notification.textContent = 'Copied!';
+                    suggestion.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 2000);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-    <header>
-        <h1>VerbumVigil</h1>
-        <p class="subtitle">Cultural Mismatch Detector for Translators</p>
-    </header>
+    <div class="top-header">
+        <div class="logo">
+            <span class="logo-verbum">Verbum</span><span class="logo-vigil">Vigil</span>
+        </div>
+        <div class="header-actions">
+            <div class="neon-button">
+                <span>Start Analysis</span>
+            </div>
+            <div class="powered-by">
+                Powered by <span class="gemini-text">Gemini 2.5 Pro technology</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="user-profile">
+            <div class="avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h3>User Name</h3>
+                <p>user@example.com</p>
+            </div>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item" onclick="alert('Account section coming soon!'); return false;"><i class="fa-solid fa-user-circle"></i> Account</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-file-alt"></i> Entries</a>
+            <a href="#" class="menu-item" onclick="document.querySelector('.history-section').scrollIntoView({behavior: 'smooth'}); return false;"><i class="fa-solid fa-history"></i> History</a>
+            <a href="#" class="menu-item" onclick="toggleTheme(); return false;"><i class="fa-solid fa-moon"></i> Toggle Theme</a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="settings-icon" onclick="alert('Settings will be available in the next update!'); return false;"><i class="fa-solid fa-cog"></i></a>
+        </div>
+    </div>
     
     <main>
+        <header class="main-header">
+            <h1 class="glow-text">Cultural Expression Detector</h1>
+            <p class="subtitle">Enter a subtle and notable series of phrases to detect cultural expressions and meanings</p>
+        </header>
+        
         <section class="input-section">
             <form method="POST" action="/">
                 <div class="form-group">
-                    <label for="text">Enter text to analyze:</label>
-                    <textarea id="text" name="text" rows="10" required>{{ text|default('', true) }}</textarea>
+                    <textarea id="text" name="text" rows="8" placeholder="Enter text here..." required>{{ text|default('', true) }}</textarea>
                 </div>
-                <button type="submit" class="submit-btn">Analyze Text</button>
+                
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="realtime" id="realtime">
+                        <span class="checkmark"></span>
+                        Enable real-time analysis
+                    </label>
+                    
+                    <button type="submit" class="submit-btn">Analyze</button>
+                </div>
             </form>
         </section>
         
         {% if has_results %}
         <section class="results-section">
-            <h2>Analysis Results</h2>
+            <h2 class="section-title">Analysis Results</h2>
             
             {% if mismatches %}
-                <p class="alert warning">Found {{ mismatches|length }} potential cultural mismatches:</p>
+                <p class="alert warning">Found {{ mismatches|length }} potential cultural expressions</p>
                 
                 <div class="mismatches-container">
                 {% for mismatch in mismatches %}
@@ -41,20 +122,25 @@
                             <p><strong>Suggestion:</strong> {{ mismatch.suggestion }}</p>
                         </div>
                         {% if mismatch.source == 'gemini' %}
-                        <div class="source-tag">Detected by Gemini AI</div>
+                        <div class="source-tag">AI Analyzed</div>
                         {% endif %}
                     </div>
                 {% endfor %}
                 </div>
             {% else %}
-                <p class="alert success">No cultural mismatches detected.</p>
+                <p class="alert success">No cultural expressions detected.</p>
             {% endif %}
         </section>
         {% endif %}
+        
+        <section class="history-section">
+            <h2 class="section-title">Analysis History</h2>
+            <div class="action-buttons">
+                <button class="action-btn pink-btn"><i class="fa-solid fa-clock-rotate-left"></i> View History</button>
+                <button class="action-btn purple-btn"><i class="fa-solid fa-sliders"></i> Settings</button>
+                <button class="action-btn blue-btn"><i class="fa-solid fa-play"></i> Start Analysis</button>
+            </div>
+        </section>
     </main>
-    
-    <footer>
-        <p>VerbumVigil - Powered by Flask and Gemini 2.5</p>
-    </footer>
 </body>
 </html>

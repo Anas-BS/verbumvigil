@@ -82,7 +82,7 @@ def analyze_with_gemini(text):
         # Configure the Gemini API
         genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
         
-        # Use Gemini-2.5 model
+        # Use Gemini 2.5 model
         model = genai.GenerativeModel('gemini-2.5')
         
         prompt = f"""
@@ -102,20 +102,29 @@ def analyze_with_gemini(text):
         If you don't find any issues, return an empty array.
         """
         
+        print(f"Sending request to Gemini API with text: {text[:50]}...")
         response = model.generate_content(prompt)
         
         # Process the response to extract the JSON
         try:
             # Extract JSON from response
             content = response.text
+            print(f"Received response from Gemini API: {content[:100]}...")
+            
             # Find JSON array pattern between square brackets
             json_match = re.search(r'\[\s*\{.*\}\s*\]', content, re.DOTALL)
             if json_match:
                 json_str = json_match.group(0)
-                return json.loads(json_str)
-            return []
-        except Exception:
+                results = json.loads(json_str)
+                print(f"Successfully parsed {len(results)} results from Gemini API")
+                return results
+            else:
+                print("No JSON array found in Gemini response")
+                return []
+        except Exception as e:
             # Fallback if JSON parsing fails
+            print(f"Error parsing JSON from Gemini response: {e}")
+            print(f"Raw response content: {content[:200]}...")
             return []
             
     except Exception as e:
